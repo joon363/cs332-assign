@@ -54,12 +54,14 @@ object Main {
   def countChange(money: Int, coins: List[Int]): Int = {
     // sort coins list in descending order
     val sortedCoins = coins.sorted.reverse
+
     // return 0 if no more coins available
     if(sortedCoins.isEmpty && money!=0) 0
     // return 1 if money is zero
     else if(money==0) 1
     // exclude coin which has bigger value than remaining money
     else if (sortedCoins.head > money) countChange(money, sortedCoins.tail)
+
     // first way: use biggest coin, recursion
     // second way: do not use biggest coin, recursion without it
     else countChange(money - sortedCoins.head, sortedCoins) +
