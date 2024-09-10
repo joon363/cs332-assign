@@ -1,2 +1,17 @@
 # Project exclude paths
+/.idea/
 /out/
+
+/recfun/.idea/
+/recfun/.settings/
+/recfun/lib/
+/recfun/lib_managed/
+/recfun/project/
+/recfun/recitations/
+/recfun/submission/
+/recfun/target/
+/recfun/.classpath
+/recfun/.project
+/recfun/build.sbt
+
+cs332-assign.iml
