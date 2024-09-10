@@ -10,19 +10,6 @@ object Main {
         print(pascal(col, row) + " ")
       println()
     }
-
-    println("balance test")
-    print(balance("(if (zero? x) max (/ 1 x))".toList) + " should be true\n")
-    print(balance("I told him (that it's not (yet) done).\n(But he wasn't listening)".toList)+ " should be true\n")
-    print(balance(":-)".toList)+ " should be false\n")
-    print(balance("())(".toList)+ " should be false\n")
-
-    println("count test")
-    print(countChange(4,List(1,2))+ " should be 3\n")
-    print(countChange(2,List(1,2))+ " should be 2\n")
-    print(countChange(2,List(1,3))+ " should be 1\n")
-    print(countChange(2,List(5,3))+ " should be 0\n")
-    print(countChange(0,List(1,2))+ " should be 1\n")
   }
 
   /**
