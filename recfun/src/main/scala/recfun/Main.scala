@@ -31,12 +31,19 @@ object Main {
    */
   def balance(chars: List[Char]): Boolean = {
     def check(x: Int, auxList: List[Char]): Boolean = {
+      // more ')': unbalanced
       if (x < 0) false
+      // at the end of the list, return true when balanced
       else if (auxList.isEmpty) x == 0
+      // recursion without first element
       else {
         check(count(x, auxList.head), auxList.tail)
       }
     }
+
+    // if '(', add one
+    // if ')', sub one
+    // therefore it can check whether the string is balanced
     def count(num: Int, element: Char): Int = {
       if (element == '(') num + 1
       else if (element == ')') num - 1
