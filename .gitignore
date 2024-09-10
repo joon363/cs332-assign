@@ -15,3 +15,4 @@
 /recfun/build.sbt
 
 cs332-assign.iml
+recfun/src/main/scala/common/package.scala
