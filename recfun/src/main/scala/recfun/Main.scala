@@ -1,5 +1,6 @@
 package recfun
 import common._
+import scala.annotation.tailrec
 
 object Main {
   def main(args: Array[String]) {
@@ -37,6 +38,7 @@ object Main {
    * Exercise 2
    */
   def balance(chars: List[Char]): Boolean = {
+    @tailrec
     def check(x: Int, auxList: List[Char]): Boolean = {
       // more ')': unbalanced
       if (x < 0) false
@@ -47,7 +49,6 @@ object Main {
         check(count(x, auxList.head), auxList.tail)
       }
     }
-
     // if '(', add one
     // if ')', sub one
     // therefore it can check whether the string is balanced
