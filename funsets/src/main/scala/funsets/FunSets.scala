@@ -67,8 +67,6 @@ object FunSets {
    * that satisfies `p`.
    */
   def exists(s: Set, p: Int => Boolean): Boolean = {
-    //if none of s satisfies p; forall(!p)==true, return false
-    //if any s satisfies p; forall(!p)==false, return true
     !forall(s,(x:Int) => !p(x))
   }
 
@@ -76,7 +74,7 @@ object FunSets {
    * Returns a set transformed by applying `f` to each element of `s`.
    */
   def map(s: Set, f: Int => Int): Set = {
-    (x:Int) => exists(s, (y:Int) => f(y)==x )
+    (x:Int) => exists(s, (y:Int) => f(y) == x )
   }
 
   /**
