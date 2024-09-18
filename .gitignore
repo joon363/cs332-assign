@@ -14,5 +14,18 @@
 /recfun/.project
 /recfun/build.sbt
 
+/funsets/.idea/
+/funsets/.settings/
+/funsets/lib/
+/funsets/lib_managed/
+/funsets/project/
+/funsets/recitations/
+/funsets/submission/
+/funsets/target/
+/funsets/.classpath
+/funsets/.project
+/funsets/build.sbt
+/funsets/src/main/scala/common
+
 cs332-assign.iml
 recfun/src/main/scala/common/package.scala
