@@ -66,7 +66,7 @@ abstract class TweetSet {
    * Question: Should we implment this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-  def mostRetweeted: Tweet = ???
+  def mostRetweeted: Tweet
 
   /**
    * Returns a list containing all tweets of this set, sorted by retweet count
@@ -77,7 +77,7 @@ abstract class TweetSet {
    * Question: Should we implment this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-  def descendingByRetweet: TweetList = ???
+  def descendingByRetweet: TweetList
 
 
   /**
@@ -113,6 +113,10 @@ class Empty extends TweetSet {
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = acc;
 
   def union(that: TweetSet): TweetSet = that
+
+  def mostRetweeted: Tweet = throw new NoSuchElementException
+
+  def descendingByRetweet: TweetList = Nil
   /**
    * The following methods are already implemented
    */
@@ -138,6 +142,34 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     // recursively union trees from right to left
     left.union(right.union(that.incl(elem)))
   }
+  
+  def mostRetweeted: Tweet = {
+    val leftMost = safeMostRetweeted(this.elem, left)
+    val rightMost = safeMostRetweeted(this.elem, right)
+    maxOfThreeTweet(rightMost, leftMost, elem)
+  }
+
+  // exception handler
+  def safeMostRetweeted(original:Tweet, sub:TweetSet): Tweet = {
+    try{
+      sub.mostRetweeted
+    } catch {
+      case e: NoSuchElementException => original
+    }
+  }
+
+  def maxOfThreeTweet(tweet: Tweet, tweet1: Tweet, tweet2: Tweet): Tweet = {
+    val maxTweet12 = if(tweet1.retweets > tweet2.retweets) tweet1 else tweet2
+    val most = if(tweet.retweets > maxTweet12.retweets) tweet else maxTweet12
+    most
+  }
+
+  def descendingByRetweet: TweetList = {
+    val mostTweet = this.mostRetweeted
+    val remainingList = this.remove(mostTweet)
+    new Cons(mostTweet, remainingList.descendingByRetweet)
+  }
+
   /**
    * The following methods are already implemented
    */
