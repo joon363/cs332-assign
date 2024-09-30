@@ -142,7 +142,7 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     // recursively union trees from right to left
     left.union(right.union(that.incl(elem)))
   }
-  
+
   def mostRetweeted: Tweet = {
     val leftMost = safeMostRetweeted(this.elem, left)
     val rightMost = safeMostRetweeted(this.elem, right)
@@ -223,17 +223,27 @@ object GoogleVsApple {
   val google = List("android", "Android", "galaxy", "Galaxy", "nexus", "Nexus")
   val apple = List("ios", "iOS", "iphone", "iPhone", "ipad", "iPad")
 
-  lazy val googleTweets: TweetSet = ???
-  lazy val appleTweets: TweetSet = ???
+  lazy val googleTweets: TweetSet = keywordTweetSet(allTweets,google)
+  lazy val appleTweets: TweetSet = keywordTweetSet(allTweets,apple)
+
+  // returns all tweets containing keyword
+  def keywordTweetSet(tweetSet: TweetSet, keywords:List[String]): TweetSet = {
+    tweetSet.filter(tweet => isKeywordExists(keywords, tweet))
+  }
+  // check if single tweet contains any keyword in the keywords List
+  def isKeywordExists(keywords:List[String],tweet:Tweet): Boolean = {
+    keywords.exists(keyword => tweet.text.contains(keyword))
+  }
 
   /**
    * A list of all tweets mentioning a keyword from either apple or google,
    * sorted by the number of retweets.
    */
-  lazy val trending: TweetList = ???
+  lazy val trending: TweetList = (googleTweets union appleTweets).descendingByRetweet
 }
 
 object Main extends App {
   // Print the trending tweets
   GoogleVsApple.trending foreach println
+  assert(GoogleVsApple.trending.head.retweets==321)
 }
