@@ -40,5 +40,19 @@
 /objsets/build.sbt
 /objsets/src/main/scala/common
 
+/patmat/.idea/
+/patmat/.settings/
+/patmat/lib/
+/patmat/lib_managed/
+/patmat/project/
+/patmat/recitations/
+/patmat/submission/
+/patmat/target/
+/patmat/.classpath
+/patmat/.project
+/patmat/build.sbt
+/patmat/src/main/scala/common
+
+
 cs332-assign.iml
 recfun/src/main/scala/common/package.scala
