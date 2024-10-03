@@ -3,6 +3,7 @@ package patmat
 import common._
 
 import java.util.concurrent.locks.Condition
+import scala.annotation.tailrec
 
 /**
  * Assignment 4: Huffman coding
@@ -138,6 +139,7 @@ object Huffman {
    *    the example invocation. Also define the return type of the `until` function.
    *  - try to find sensible parameter names for `xxx`, `yyy` and `zzz`.
    */
+  @tailrec
   def until(condition: List[CodeTree]=>Boolean, action:List[CodeTree]=>List[CodeTree])(trees: List[CodeTree]): CodeTree = {
     if(condition(trees)) trees.head
     else until(condition, action)(action(trees))
