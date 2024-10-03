@@ -170,7 +170,6 @@ object Huffman {
     def decode_acc(tree2: CodeTree, bits: List[Bit], acc:List[Char]): List[Char] = {
       (bits,tree2) match {
         // once reached leaf, add to accumulator list.
-        case (List(b),Leaf(c,w)) => acc++List(c)
         case (List(),Leaf(c,w)) => acc++List(c)
 
         // if bit is 0, recursion to left tree; else right
@@ -212,7 +211,24 @@ object Huffman {
    * This function encodes `text` using the code tree `tree`
    * into a sequence of bits.
    */
-  def encode(tree: CodeTree)(text: List[Char]): List[Bit] = ???
+  def encode(tree: CodeTree)(text: List[Char]): List[Bit] = {
+    @tailrec
+    def encode_acc(tree2: CodeTree, text: List[Char], acc:List[Bit]): List[Bit] = {
+      (text, tree2) match {
+        // no more texts to encode; return accumulated list.
+        case (List(), _) => acc
+
+        // finding based on trees' character List
+        case (h :: t, Fork(l, r, c, w)) =>
+          if (chars(l) contains h) encode_acc(l, text, acc++List(0))
+          else encode_acc(r, text, acc++List(1))
+
+        // if there are more texts to encode, rerun from original tree.
+        case (h :: t, Leaf(c, w)) => encode_acc(tree, t, acc)
+      }
+    }
+    encode_acc(tree,text,List())
+  }
 
 
   // Part 4b: Encoding using code table
