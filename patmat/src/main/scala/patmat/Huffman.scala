@@ -2,6 +2,8 @@ package patmat
 
 import common._
 
+import java.util.concurrent.locks.Condition
+
 /**
  * Assignment 4: Huffman coding
  *
@@ -77,7 +79,10 @@ object Huffman {
    *       println("integer is  : "+ theInt)
    *   }
    */
-  def times(chars: List[Char]): List[(Char, Int)] = ???
+  def times(chars: List[Char]): List[(Char, Int)] = {
+    // convert into Set to obtain unique elements, then count each element.
+    chars.toSet.map((c:Char) => (c, chars.count(_==c))).toList
+  }
 
   /**
    * Returns a list of `Leaf` nodes for a given frequency table `freqs`.
@@ -86,12 +91,16 @@ object Huffman {
    * head of the list should have the smallest weight), where the weight
    * of a leaf is the frequency of the character.
    */
-  def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = ???
+  def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = {
+    freqs.sortBy( _._2) map { case (char, freq) => new Leaf(char, freq)}
+  }
 
   /**
    * Checks whether the list `trees` contains only one single code tree.
    */
-  def singleton(trees: List[CodeTree]): Boolean = ???
+  def singleton(trees: List[CodeTree]): Boolean = {
+    trees.length==1
+  }
 
   /**
    * The parameter `trees` of this function is a list of code trees ordered
@@ -105,7 +114,12 @@ object Huffman {
    * If `trees` is a list of less than two elements, that list should be returned
    * unchanged.
    */
-  def combine(trees: List[CodeTree]): List[CodeTree] = ???
+  def combine(trees: List[CodeTree]): List[CodeTree] = {
+    if(singleton(trees) || trees.isEmpty) trees
+    else {
+      (makeCodeTree(trees(0), trees(1)) :: trees.tail.tail).sortBy(weight)
+    }
+  }
 
   /**
    * This function will be called in the following way:
@@ -124,7 +138,10 @@ object Huffman {
    *    the example invocation. Also define the return type of the `until` function.
    *  - try to find sensible parameter names for `xxx`, `yyy` and `zzz`.
    */
-  def until(xxx: ???, yyy: ???)(zzz: ???): ??? = ???
+  def until(condition: List[CodeTree]=>Boolean, action:List[CodeTree]=>List[CodeTree])(trees: List[CodeTree]): CodeTree = {
+    if(condition(trees)) trees.head
+    else until(condition, action)(action(trees))
+  }
 
   /**
    * This function creates a code tree which is optimal to encode the text `chars`.
@@ -132,7 +149,9 @@ object Huffman {
    * The parameter `chars` is an arbitrary text. This function extracts the character
    * frequencies from that text and creates a code tree based on them.
    */
-  def createCodeTree(chars: List[Char]): CodeTree = ???
+  def createCodeTree(chars: List[Char]): CodeTree = {
+    until(singleton,combine)(makeOrderedLeafList(times(chars)))
+  }
 
 
 
