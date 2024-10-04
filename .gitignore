@@ -53,6 +53,18 @@
 /patmat/build.sbt
 /patmat/src/main/scala/common
 
+/forcomp/.idea/
+/forcomp/.settings/
+/forcomp/lib/
+/forcomp/lib_managed/
+/forcomp/project/
+/forcomp/recitations/
+/forcomp/submission/
+/forcomp/target/
+/forcomp/.classpath
+/forcomp/.project
+/forcomp/build.sbt
+/forcomp/src/main/scala/common
 
 cs332-assign.iml
 recfun/src/main/scala/common/package.scala
