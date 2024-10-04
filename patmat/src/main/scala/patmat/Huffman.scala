@@ -240,7 +240,7 @@ object Huffman {
    * the code table `table`.
    */
   def codeBits(table: CodeTable)(char: Char): List[Bit] = {
-    table.toMap.apply(char)
+    table.toMap.getOrElse(char, throw new NoSuchElementException("$char not found in code table"))
   }
 
   /**
@@ -252,14 +252,18 @@ object Huffman {
    * sub-trees, think of how to build the code table for the entire tree.
    */
   def convert(tree: CodeTree): CodeTable = {
-    def convert_acc(tree2:CodeTree, acc:List[Bit]): CodeTable   = {
-      tree match{
-        case Fork(left, right, chars, weight)=>
-          mergeCodeTables(convert_acc(left, acc :+ 0), convert_acc(right, acc :+ 1))
-        case Leaf(char, weight) => List((char,acc))
-      }
+    tree match {
+      case Leaf(char,weight) => List((char,List(0)))
+      case Fork(l,r,c,w)=>
+        def convert_acc(tree2:CodeTree, acc:List[Bit]): CodeTable   = {
+          tree2 match{
+            case Fork(left, right, chars, weight)=>
+              mergeCodeTables(convert_acc(left, acc ++ List(0)), convert_acc(right, acc ++ List(1)))
+            case Leaf(char, weight) => List((char,acc))
+          }
+        }
+        convert_acc(Fork(l,r,c,w),List())
     }
-    convert_acc(tree,List())
   }
 
   /**
@@ -275,5 +279,7 @@ object Huffman {
    * To speed up the encoding process, it first converts the code tree to a code table
    * and then uses it to perform the actual encoding.
    */
-  def quickEncode(tree: CodeTree)(text: List[Char]): List[Bit] = ???
+  def quickEncode(tree: CodeTree)(text: List[Char]): List[Bit] = {
+    text.flatMap((c:Char) => codeBits(convert(tree))(c))
+  }
 }

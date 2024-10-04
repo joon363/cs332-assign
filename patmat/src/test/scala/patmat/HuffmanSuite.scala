@@ -87,4 +87,30 @@ class HuffmanSuite extends FunSuite {
       assert(encode(t1)("ab".toList) === List(0,1))
     }
   }
+  test("codeBits test") {
+    val table = List(('a',List(0)),('b',List(0,1)),('c',List(1,1)))
+    assert(codeBits(table)('c')===List(1,1))
+    assert(codeBits(table)('a')===List(0))
+  }
+
+  test("convert tree test") {
+    new TestTrees {
+      assert(convert(t0) === List(('a',List(0))))
+    }
+  }
+  test("convert tree test 2") {
+    new TestTrees {
+      assert(convert(t1) === List(('a',List(0)),('b',List(1))))
+    }
+  }
+  test("convert tree test 3") {
+    new TestTrees {
+      assert(convert(t2) === List(('a',List(0,0)),('b',List(0,1)),('d',List(1))))
+    }
+  }
+  test("quickEncode test") {
+    new TestTrees {
+      assert(quickEncode(t1)("ab".toList) === List(0,1))
+    }
+  }
 }
