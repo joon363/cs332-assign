@@ -66,5 +66,19 @@
 /forcomp/build.sbt
 /forcomp/src/main/scala/common
 
+/streams/.idea/
+/streams/.settings/
+/streams/lib/
+/streams/lib_managed/
+/streams/project/
+/streams/recitations/
+/streams/submission/
+/streams/target/
+/streams/.classpath
+/streams/.project
+/streams/build.sbt
+/streams/src/main/scala/common
+
+
 cs332-assign.iml
 recfun/src/main/scala/common/package.scala
