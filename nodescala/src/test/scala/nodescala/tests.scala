@@ -77,6 +77,35 @@ class NodeScalaSuite extends FunSuite {
     assert(Await.result(continued, 1 second) == 42)
   }
 
+  test("run should execute the asynchronous task and complete successfully") {
+    var completed = false
+    val subscription = Future.run() { token =>
+      Future {
+        Thread.sleep(10) // Simulate some work
+        completed = true
+      }
+    }
+    Thread.sleep(100)
+    assert(completed)
+    subscription.unsubscribe()
+  }
+
+  test("run should cancel the task when unsubscribe is called") {
+    var cancelled = false
+    val subscription = Future.run() { token =>
+      Future {
+        while (token.nonCancelled) {
+          Thread.sleep(10)
+        }
+        cancelled = true
+      }
+    }
+    Thread.sleep(100)
+    subscription.unsubscribe()
+    Thread.sleep(100)
+    assert(cancelled)
+  }
+
   
   
   class DummyExchange(val request: Request) extends Exchange {
