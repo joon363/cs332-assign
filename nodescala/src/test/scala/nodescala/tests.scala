@@ -31,6 +31,27 @@ class NodeScalaSuite extends FunSuite {
     }
   }
 
+  test("A Future should complete only after all futures in the list complete") {
+    val futures = List(Future.successful(1), Future.successful(2), Future.successful(3))
+    val all = Future.all(futures)
+    assert(Await.result(all, 1 second) == List(1, 2, 3))
+  }
+
+  test("A Future should complete with the first future that completes successfully") {
+    val first = Future { Thread.sleep(50); 1 }
+    val second = Future { Thread.sleep(100); 2 }
+    val third = Future { Thread.sleep(150); 3 }
+    val any = Future.any(List(first, second, third))
+    assert(Await.result(any, 200 millis) == 1)
+  }
+  test("A Future should complete after a specified delay") {
+    val startTime = System.nanoTime()
+    val delay = Future.delay(100.millis)
+    Await.result(delay, 200 millis)
+    val elapsedTime = (System.nanoTime() - startTime).nanos.toMillis
+    assert(elapsedTime >= 100)
+  }
+
   
   
   class DummyExchange(val request: Request) extends Exchange {
