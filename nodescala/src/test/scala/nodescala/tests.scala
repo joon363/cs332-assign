@@ -44,12 +44,37 @@ class NodeScalaSuite extends FunSuite {
     val any = Future.any(List(first, second, third))
     assert(Await.result(any, 200 millis) == 1)
   }
+
   test("A Future should complete after a specified delay") {
     val startTime = System.nanoTime()
     val delay = Future.delay(100.millis)
     Await.result(delay, 200 millis)
     val elapsedTime = (System.nanoTime() - startTime).nanos.toMillis
     assert(elapsedTime >= 100)
+  }
+
+  test("A Future now should throw NoSuchElementException if not completed") {
+    val future = Future.never[Int]
+    try {
+      future.now
+    } catch {
+      case _: NoSuchElementException => assert(true)
+    }
+  }
+
+  test("A Future should continue with a given function after completion") {
+    val future = Future.successful(21)
+    val continued = future.continueWith(f => Await.result(f, 0 nanos) * 2)
+    assert(Await.result(continued, 1 second) == 42)
+  }
+
+  test("A Future should continue with a given function using the result after completion") {
+    val future = Future.successful(21)
+    val continued = future.continue {
+      case Success(value) => value * 2
+      case Failure(_)     => 0
+    }
+    assert(Await.result(continued, 1 second) == 42)
   }
 
   
