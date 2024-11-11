@@ -79,6 +79,18 @@
 /streams/build.sbt
 /streams/src/main/scala/common
 
+/nodescala/.idea/
+/nodescala/.settings/
+/nodescala/lib/
+/nodescala/lib_managed/
+/nodescala/project/
+/nodescala/recitations/
+/nodescala/submission/
+/nodescala/target/
+/nodescala/.classpath
+/nodescala/.project
+/nodescala/build.sbt
+/nodescala/src/main/scala/common
 
 cs332-assign.iml
 recfun/src/main/scala/common/package.scala
